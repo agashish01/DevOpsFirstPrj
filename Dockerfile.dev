@@ -1,0 +1,10 @@
+FROM node:alpine
+WORKDIR '/app'
+
+COPY package.json .
+RUN npm install
+
+#As we are using Volumes; hence we don't need below statement; because, anyway, it will refer to the files in local filesystem.
+COPY . .
+
+CMD ["npm", "run", "start"]
