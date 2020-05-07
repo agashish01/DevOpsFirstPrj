@@ -1,3 +1,4 @@
+#Below dockerfile is for running in dev
 FROM node:alpine
 WORKDIR '/app'
 
@@ -5,6 +6,8 @@ COPY package.json .
 RUN npm install
 
 #As we are using Volumes; hence we don't need below statement; because, anyway, it will refer to the files in local filesystem.
+#But still we are keeping this , so that , when we run "npm run test" in container. This command executed successfully .
+#Otherwise, it might fail not finding the required file.
 COPY . .
 
 CMD ["npm", "run", "start"]
