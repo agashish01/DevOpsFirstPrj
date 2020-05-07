@@ -1,0 +1,21 @@
+# Need super user access.
+sudo: required
+
+# Below is the list of services required already installed.
+services:
+  - docker
+
+# Series of steps required before we deploy/test our project
+before_install:
+  #Tagging the image name, so that, the image name can be used further to run the image. Otherwise on console, below command returns the image-id
+  #But after tagging, it will give a name to the image. Below tag name won't be used anywhere else other than in travis because, its been written in travis.yml 
+  - docker build -t docker-react -f Dockerfile.dev .
+
+#how to run our test-suites. <script> keeps all commands we need to tell , how to run our test suites. Each command (mentioned below) on execution 
+#will return the status code. If the status-code <> 0; then travis will assume; the test has failed.
+script:
+  #"--coverage" is being added; so that command "npm run test" automatically exit instead of waiting further for inputs from user.
+  #"--coverage" : this will give the coverage of test over the source code. But, Travis here is only interested in status code returned.
+  #"--coverage" : Travis is not interested in the coverage report. Its just to exit the "npm run test".
+  #In case , even if 1 test fails; then status-code will be 1.
+  - docker run docker-react npm run test -- --coverage
