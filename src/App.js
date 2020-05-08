@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          ddd <code>src/App.js</code> and save to reload.
+          what the hell is <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          xxxxxxxxxxx
+          is the latest note
         </a>
       </header>
     </div>

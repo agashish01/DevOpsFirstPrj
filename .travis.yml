@@ -57,3 +57,6 @@ deploy:
   #These env variables will be encrypted and stored by travis. Below are the names of variables declared in Travis.
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
+
+  #then after deployment, you can test it by clicking the URL present in amazon. E.g.; here the URL is 
+  #http://dockerwebapp-env.eba-7st3aery.us-east-2.elasticbeanstalk.com/
