@@ -21,3 +21,33 @@ script:
   #"--coverage" : Travis is not interested in the coverage report. Its just to exit the "npm run test".
   #In case , even if 1 test fails; then status-code will be 1.
   - docker run -e CI=true docker-react npm run test -- --coverage
+
+#Travis comes already pre-configured with elastic-beans-talk and many other cloud providers. Hence we can mention them in this file. 
+#Below names are created when we created the application with platform "docker" in AWS. Hence, we are mentioning them now.
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-webapp"
+  env: "DockerWebapp-env"
+  #travis decides to deploy the code; it zip all files into one file and copy them to S3 (this is hard-disk on AWS). Then travis will poke AWS that,
+  # it has copied all the files; so AWS should start the deployment now. S3 bucket is also created when application is created.
+  #we can get S3 bucket name by searching for S3 in services. It will give the list of all buckets.
+  bucket_name: "elasticbeanstalk-us-east-2-924091992100"
+  #Bucket_path==app.  When clicked on bucket, we see the list of folders. But, we won't find the folder with name of application. That will be created later.
+  #But we can give the same name as the application name for bucket_path.
+  bucket_path: "docker-webapp"
+  #Deployment will be triggered when the code is pushed in "master" branch only and not the "feature" branch.
+  on:
+    branch: master
+
+  #generate the set of API keys in AWS , so that access can be given to AWS account over to Travis.
+  #Search for IAM -> Add user -> username "travis_ci_user" , Access-type  "programmatic"   -> select policy with name "AWSElasticBeanstalkFullAccess"
+
+  #Once the access-key and pwd is created; the details can be downloaded. Details can be downloaded only once. If details are lost then need to create
+  #the key again.
+  #We should not put these credentials directly in this file because, this file is shared in public on GIT. Hence , there is an alternative to this.
+  #We can mention these keys in the settings (Environment Variables section) of the repository (application to deploy) present in Travis. 
+  #These env variables will be encrypted and stored by travis. Below are the names of variables declared in Travis.
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: 
+    secure: "$AWS_SECRET_ACCESS_KEY"
