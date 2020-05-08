@@ -1,6 +1,9 @@
 #The moment, any of the file is committed in GIT; As per the code below, this file will start running in travis. Hence, it will run all the commands 
 #present. It will run the tests as given in below script. The tests will run in travis only. Once the tests are successful, then it will start deployment
 #to AWS based on credentials given. 
+#Once deployed to AWS, Docker Container is now running in Elastic Beanstalk on your own dedicated environment in the AWS Cloud.This environment is launched with Elastic Beanstalk Docker Platform.
+
+
 
 # Need super user access.
 sudo: required
