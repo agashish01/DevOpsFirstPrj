@@ -1,3 +1,7 @@
+#The moment, any of the file is committed in GIT; As per the code below, this file will start running in travis. Hence, it will run all the commands 
+#present. It will run the tests as given in below script. The tests will run in travis only. Once the tests are successful, then it will start deployment
+#to AWS based on credentials given. 
+
 # Need super user access.
 sudo: required
 
@@ -49,5 +53,4 @@ deploy:
   #We can mention these keys in the settings (Environment Variables section) of the repository (application to deploy) present in Travis. 
   #These env variables will be encrypted and stored by travis. Below are the names of variables declared in Travis.
   access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: 
-    secure: "$AWS_SECRET_ACCESS_KEY"
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
