@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          is the latest note
+          is the latest note here for feature
         </a>
       </header>
     </div>

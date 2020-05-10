@@ -1,62 +1,22 @@
-#The moment, any of the file is committed in GIT; As per the code below, this file will start running in travis. Hence, it will run all the commands 
-#present. It will run the tests as given in below script. The tests will run in travis only. Once the tests are successful, then it will start deployment
-#to AWS based on credentials given. 
-#Once deployed to AWS, Docker Container is now running in Elastic Beanstalk on your own dedicated environment in the AWS Cloud.This environment is launched with Elastic Beanstalk Docker Platform.
-
-
-
-# Need super user access.
 sudo: required
-
-# Below is the list of services required already installed.
 services:
   - docker
 
-# Series of steps required before we deploy/test our project
 before_install:
-  #Tagging the image name, so that, the image name can be used further to run the image. Otherwise on console, below command returns the image-id
-  #But after tagging, it will give a name to the image. Below tag name won't be used anywhere else other than in travis because, its been written in travis.yml 
   - docker build -t docker-react -f Dockerfile .
 
 language: generic 
-
-#how to run our test-suites. <script> keeps all commands we need to tell , how to run our test suites. Each command (mentioned below) on execution 
-#will return the status code. If the status-code <> 0; then travis will assume; the test has failed.
 script:
-  #"--coverage" is being added; so that command "npm run test" automatically exit instead of waiting further for inputs from user.
-  #"--coverage" : this will give the coverage of test over the source code. But, Travis here is only interested in status code returned.
-  #"--coverage" : Travis is not interested in the coverage report. Its just to exit the "npm run test".
-  #In case , even if 1 test fails; then status-code will be 1.
   - docker run -e CI=true docker-react npm run test -- --coverage
 
-#Travis comes already pre-configured with elastic-beans-talk and many other cloud providers. Hence we can mention them in this file. 
-#Below names are created when we created the application with platform "docker" in AWS. Hence, we are mentioning them now.
 deploy:
   provider: elasticbeanstalk
   region: "us-east-2"
   app: "docker-webapp"
   env: "DockerWebapp-env"
-  #travis decides to deploy the code; it zip all files into one file and copy them to S3 (this is hard-disk on AWS). Then travis will poke AWS that,
-  # it has copied all the files; so AWS should start the deployment now. S3 bucket is also created when application is created.
-  #we can get S3 bucket name by searching for S3 in services. It will give the list of all buckets.
   bucket_name: "elasticbeanstalk-us-east-2-924091992100"
-  #Bucket_path==app.  When clicked on bucket, we see the list of folders. But, we won't find the folder with name of application. That will be created later.
-  #But we can give the same name as the application name for bucket_path.
   bucket_path: "docker-webapp"
-  #Deployment will be triggered when the code is pushed in "master" branch only and not the "feature" branch.
   on:
     branch: master
-
-  #generate the set of API keys in AWS , so that access can be given to AWS account over to Travis.
-  #Search for IAM -> Add user -> username "travis_ci_user" , Access-type  "programmatic"   -> select policy with name "AWSElasticBeanstalkFullAccess"
-
-  #Once the access-key and pwd is created; the details can be downloaded. Details can be downloaded only once. If details are lost then need to create
-  #the key again.
-  #We should not put these credentials directly in this file because, this file is shared in public on GIT. Hence , there is an alternative to this.
-  #We can mention these keys in the settings (Environment Variables section) of the repository (application to deploy) present in Travis. 
-  #These env variables will be encrypted and stored by travis. Below are the names of variables declared in Travis.
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-
-  #then after deployment, you can test it by clicking the URL present in amazon. E.g.; here the URL is 
-  #http://dockerwebapp-env.eba-7st3aery.us-east-2.elasticbeanstalk.com/
