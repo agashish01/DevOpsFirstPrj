@@ -16,7 +16,7 @@ services:
 before_install:
   #Tagging the image name, so that, the image name can be used further to run the image. Otherwise on console, below command returns the image-id
   #But after tagging, it will give a name to the image. Below tag name won't be used anywhere else other than in travis because, its been written in travis.yml 
-  - docker build -t docker-react -f Dockerfile.dev .
+  - docker build -t docker-react -f Dockerfile .
 
 language: generic 
 
